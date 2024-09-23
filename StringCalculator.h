@@ -2,21 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int checkNextNumber(char nextChar)
+int isDigit(char character)
 {
-    if(nextChar >= '0' && nextChar <= '9')
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-int checkCurrentNumber(char currentChar)
-{
-    if(currentChar >= '0' && currentChar <= '9')
+    if(character >= '0' && character <= '9')
     {
         return 1;
     }
@@ -38,7 +26,7 @@ void throwNegativeException(int negatives[], int count) {
 
 // Check if a comma should be inserted between two digits
 int shouldInsertComma(char currentChar, char nextChar) {
-    return checkCurrentNumber(currentChar) && checkNextNumber(nextChar);
+    return isDigit(currentChar) && isDigit(nextChar);
 }
 
 // Insert commas between adjacent digits
@@ -58,7 +46,7 @@ void insertCommasBetweenDigits(char *numbers) {
 
 int checkIfNextCharIsNotNumber(char nextChar)
 {
-    if((nextChar == '\0' || !(nextChar >= '0' && nextChar <= '9')))
+    if((nextChar == '\0' || !isDigit(nextChar)))
     {
         return 1;
     }
@@ -98,11 +86,23 @@ void validateInput(const char *numbers) {
     }
 }
 
-int checkNoOfDigits(const char*input)
+int checkNoOfDigits(const char*input,int i)
+{
+    if (input[i] >= '0' && input[i] <= '9') 
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int parseDigits(const char*input)
 {
     int containsDigit = 0;
     for (int i = 0; input[i] != '\0'; i++) {
-        if (input[i] >= '0' && input[i] <= '9') {
+        if (checkNoOfDigits(input,i)) {
             containsDigit = 1;
         }
     }
@@ -114,7 +114,7 @@ int isNonNumericOrEmptyInput(const char *input) {
     if (strlen(input) == 0) {
         return 1;  // Input is empty
     }
-    return checkNoOfDigits(input);
+    return parseDigits(input);
 }
 
 // Extract custom delimiter from input
@@ -122,9 +122,26 @@ int isCustomDelimiter(char *stringCopy) {
     return strncmp(stringCopy, "//", 2) == 0;
 }
 
+int parseInputIfValid(char *start, char *end)
+{
+    if(end > start)
+    {
+        return 1;
+    }
+}
+
+
 int parseInputIfNotNull(char *start, char *end)
 {
-    if(start != NULL && end != NULL && end > start)
+    if(start != NULL && end != NULL)
+    {
+        return 1;
+    }
+}
+
+int parseInput(char *start, char *end)
+{
+    if(parseInputIfNotNull(start,end) && parseInputIfValid(start,end))
     {
         return 1;
     }
@@ -202,6 +219,7 @@ int processTokenToInteger(char *numbers,char delimiter[])
     return sum;
 }
 
+// Function to add numbers from a string
 int add(const char *stringInput) {
     if (isNonNumericOrEmptyInput(stringInput)) {
         return 0;  // Return 0 for non-numeric or empty input
