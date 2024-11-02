@@ -65,16 +65,24 @@ TEST(TC008, ExpectSumWithAnyLengthofDelimiters) {
     ASSERT_EQ(result, expectedresult);
 }
 
-// TEST(TC009, ThrowExceptionForNegativeNumbers) {
-//     int expectedresult = 16;
-//     const char*  input = "//;\n1;-4;7;8";
-//     int result = add(input);
-//     ASSERT_EQ(result, expectedresult);
-// }
+TEST(TC009, HandleBoundaryCaseConsiderWhenInputIs1000)
+{
+    int expectedresult = 2000;
+    const char*  input = "1000*1000";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
 
-// TEST(TC010, ExpectErrorForSingleDigitInput) {
-//     int expectedresult = 0;
-//     const char*  input = "1\n,";
-//     int result =add(input);
-//     ASSERT_EQ(result, expectedresult);
-// }
+TEST(TC010, ThrowExceptionForNegativeNumbers) {
+    int expectedresult = 0;
+    const char*  input = "//;\n1;-4;7;8";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
+
+TEST(TC011, ExpectErrorForSingleDigitInput) {
+    int expectedresult = 0;
+    const char*  input = "1\n,";
+    int result =add(input);
+    ASSERT_EQ(result, expectedresult);
+}
